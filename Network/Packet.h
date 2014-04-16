@@ -7,7 +7,7 @@
 typedef struct Frame
 {
 	//source
-	//destination
+	//destination 
 	//length
 	//payload
 	//crc
@@ -18,15 +18,15 @@ typedef struct Frame
  */
 typedef struct PacketHeader
 {
-	int TF:2;		// Traffic Class
-	int NH:1;		// Next Header
-	int HLim:2;		// Hop Limit
-	int CID:1;		// Context Identifier Extension
-	int SAC:1;		// Source Address Compression
-	int SAM:2;		// Source Address Mode
-	int M:1;		// Multicast Compression
-	int DAC:1;		// Destination Address Compression
-	int DAM:2;		// Destination Address Mode
+	int trafficClass:2;		// Traffic Class
+	int nextHeader:1;		// Next Header
+	int hopLimit:2;		// Hop Limit
+	int contextIdentifierExtension:1;		// Context Identifier Extension
+	int sourceAddressCompression:1;		// Source Address Compression
+	int sourceAddressMode:2;		// Source Address Mode
+	int multicastCompression:1;		// Multicast Compression
+	int destinationAddressCompression:1;		// Destination Address Compression
+	int destinationAddressMode:2;		// Destination Address Mode
 
 	//int 
 
