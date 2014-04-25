@@ -15,7 +15,7 @@ public:
 			setLow();
 		}
 	}
-	static __inline void setHigh()	{ Port::value(Port::value() | (1<<PinNumber)) };
+	static __inline void setHigh()	{ Port::value(Port::value() | (1<<PinNumber)); };
 	static __inline void setLow()	{ Port::value(Port::value() & ~(1<<PinNumber)); };
 	static __inline bool value()	{ return (Port::value() & (1<<PinNumber)) != 0;}
 
@@ -30,8 +30,8 @@ public:
 		}
 	}
 
-	static __inline void makeOutput() { Port:direction(Port:direction() | (1<<PinNumber))};
-	static __inline void makeInput() { Port:direction(Port::direction() & ~(1<<PinNumber))};
+	static __inline void makeOutput() { Port:direction(Port::direction() | (1<<PinNumber));};
+	static __inline void makeInput() { Port:direction(Port::direction() & ~(1<<PinNumber));};
 };
 
 

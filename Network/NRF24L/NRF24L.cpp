@@ -21,7 +21,7 @@ Nrf24l<CE,CS>::Nrf24l(Spi *aSpi)
 template<typename CE, typename CS>
 bool Nrf24l<CE,CS>::init()
 {
-	CE:setLow();
+	CE::setLow();
 	CS::setHigh();
 	//writeRegister(EN_AA, 0xAA);
 	//config
