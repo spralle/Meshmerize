@@ -19,6 +19,24 @@
     <Filter Include="Header Files\Router">
       <UniqueIdentifier>{e90d151b-b2b7-4bb2-868c-2803e3b9f31c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{df854a3c-91fe-4c95-b59b-67dba83dcec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SPI">
+      <UniqueIdentifier>{89730c13-740b-48d2-90fd-5ab357c821d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NRF24L">
+      <UniqueIdentifier>{a89bf3ef-02d5-4d79-bc92-323e903a0ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NRF24L">
+      <UniqueIdentifier>{b49657c1-fb13-486d-8c96-91ad5f91506d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CPU">
+      <UniqueIdentifier>{9ff0c7d2-f0e9-45a7-acb4-c14873200826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CPU\AVR">
+      <UniqueIdentifier>{f2253e4b-9f4f-4dc3-9be3-4f23e0440bfb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -26,6 +44,9 @@
   <ItemGroup>
     <ClCompile Include="Network.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NRF24L\NRF24L.cpp">
+      <Filter>Source Files\NRF24L</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +61,30 @@
     </ClInclude>
     <ClInclude Include="Router.h">
       <Filter>Header Files\Router</Filter>
+    </ClInclude>
+    <ClInclude Include="IModule.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="SPI.h">
+      <Filter>Header Files\SPI</Filter>
+    </ClInclude>
+    <ClInclude Include="NRF24L\NRF24L.h">
+      <Filter>Header Files\NRF24L</Filter>
+    </ClInclude>
+    <ClInclude Include="NRF24L\NRF24L_Constants.h">
+      <Filter>Header Files\NRF24L</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Pin.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Port.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arch\AVR\Ports.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arch\AVR\AVR.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

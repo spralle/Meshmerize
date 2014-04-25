@@ -76,12 +76,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="NRF24L\NRF24L.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arch\AVR\AVR.h" />
+    <ClInclude Include="Arch\AVR\Ports.h" />
+    <ClInclude Include="Core\Pin.h" />
+    <ClInclude Include="IModule.h" />
     <ClInclude Include="LinkInterface.h" />
     <ClInclude Include="Network.h" />
+    <ClInclude Include="NRF24L\NRF24L.h" />
+    <ClInclude Include="NRF24L\NRF24L_Constants.h" />
     <ClInclude Include="Packet.h" />
+    <ClInclude Include="Core\Port.h" />
     <ClInclude Include="Router.h" />
+    <ClInclude Include="SPI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
