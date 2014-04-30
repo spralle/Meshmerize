@@ -1,14 +1,8 @@
 #include "NRF24L.h"
 #include "NRF24L_Constants.h"
 
-//#include <util/delay.h>
+#include "../Util/Delays.h"
 
-class Delays
-{
-public:
-	__inline static void ms(uint32_t aMilliseconds);
-	__inline static void us(uint32_t aMicroseconds);
-};
 
 template<typename CE, typename CS>
 Nrf24l<CE,CS>::Nrf24l(Spi *aSpi)
