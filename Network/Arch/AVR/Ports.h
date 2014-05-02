@@ -7,11 +7,18 @@ namespace Avr {
 
 
 #ifdef PORTA
-typedef MAKE_PORT_8(PORTA, DDRA) PortA;
+	typedef __MAKE_REG_8(PORTA) __RPORTA;
+	typedef __MAKE_REG_8(DDRA) __RDDRA;
+	typedef __MAKE_REG_8(PINA) __RPINA;
+	typedef Port<__RPORTA, __RDDRA, __RPINA> PortA;
 #endif
 
 #ifdef PORTB
-typedef MAKE_PORT_8(PORTB, DDRB) PortB;
+//typedef MAKE_PORT_8(PORTB, DDRB) PortB;
+	typedef __MAKE_REG_8(PORTB) __RPORTB;
+	typedef __MAKE_REG_8(DDRB) __RDDRB;
+	typedef __MAKE_REG_8(PINB) __RPINB;
+	typedef Port<__RPORTB, __RDDRB, __RPINB> PortB;
 #endif
 
 #ifdef PORTC

@@ -20,7 +20,7 @@ bool Nrf24l<CE,CS>::init()
 	//writeRegister(EN_AA, 0xAA);
 	//config
 	switchChannel(mChannel);
-
+	return true;
 }
 
 template<typename CE, typename CS>

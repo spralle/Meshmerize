@@ -28,9 +28,9 @@ public:
 
 #include "../../../Core/Reg.h"
 
-typedef MAKE_REG_8(SPCR) Spcr;
-typedef MAKE_REG_8(SPDR) Spdr;
-typedef MAKE_REG_8(SPSR) Spsr;
+typedef __MAKE_REG_8(SPCR) Spcr;
+typedef __MAKE_REG_8(SPDR) Spdr;
+typedef __MAKE_REG_8(SPSR) Spsr;
 typedef Bits<Spsr, SPIF> SpsrSpif;
 typedef Bits<Spcr, MSTR> SpcrMstr;
 typedef Bits<Spcr, SPE> SpcrSpe;

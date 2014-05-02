@@ -11,8 +11,8 @@
 class Delays
 {
 	public:
-	__inline static void ms(uint32_t aMilliseconds);
-	__inline static void us(uint32_t aMicroseconds);
+	inline static void ms(uint32_t aMilliseconds);
+	inline static void us(uint32_t aMicroseconds);
 };
 
 
