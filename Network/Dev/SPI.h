@@ -1,7 +1,7 @@
 #ifndef __SPI_H__
 #define __SPI_H__
 
-#include "IModule.h"
+#include "../IModule.h"
 
 class Spi : IModule
 {

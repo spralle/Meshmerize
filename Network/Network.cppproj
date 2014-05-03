@@ -144,6 +144,9 @@
     <Compile Include="Core\Reg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Dev\SPI.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="IModule.h">
       <SubType>compile</SubType>
     </Compile>
@@ -169,9 +172,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Router.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="SPI.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Util\Delays.h">

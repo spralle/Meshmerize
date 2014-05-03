@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "../IModule.h"
-#include "../SPI.h"
+#include "../Dev/SPI.h"
 #include "../Core/Pin.h"
 
 #define NRF24L_DEFAULT_CHANNEL 66
