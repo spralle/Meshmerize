@@ -9,7 +9,7 @@
 #ifndef __ARCH_AVR_DEV_HARDWARESPI_H_
 #define __ARCH_AVR_DEV_HARDWARESPI_H_
 #include <stdint.h>
-#include "../../../Dev/SPI.h"
+#include <Dev/SPI.h>
 
 #include <avr/io.h>
 

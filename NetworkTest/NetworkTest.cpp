@@ -8,8 +8,9 @@
 #define F_CPU 16000000
 #include <avr/io.h>
 #include <util/delay.h>
-#include "../Network/Arch/AVR/Ports.h"
-#include "../Network/Core/Pin.h"
+#include <Arch/AVR/Ports.h>
+#include <Arch/AVR/Dev/HardwareUsart.h>
+#include <Core/Pin.h>
 //#include "../Network/Arch/AVR/Dev/HardwareSpi.h"
 //#include "../Network/Util/Delays.h"
 int main(void)
@@ -23,18 +24,24 @@ int main(void)
 	
 	//typedef Pins<Avr::PortB, _BV(2));
 	//DDRB |= _BV(DDB5);
+	//typedef Bits<Avr::RUCSR0B, _BV(TXEN0)> BTXEN0;
+	//BTXEN0::setHigh();
 	typedef Pin<Avr::PortB, 5> Led;
-
 	Led::makeOutput();
-	//Avr::PortB::makeOutput(_BV(5));
+	HardwareUsart usart(9600);
+	usart.init();
+	
+	//Avr::PortB::makeOutput(_BV(5));e
 	//Led::makeOutput();
 	//Led::setLow();
 	while(true)
 	{
+		usart.write((uint8_t)'H');
 		Led::setHigh();
 		//Avr::PortB::setHigh(_BV(5));
 		//PORTB |= _BV(5);
-		_delay_ms(300);
+		_delay_ms(1000);
+		usart.write((uint8_t)'L');
 		Led::setLow();
 		//Avr::PortB::setLow(_BV(5));
 		//PORTB &= ~_BV(5);

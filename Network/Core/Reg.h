@@ -9,15 +9,47 @@
 #ifndef __CORE_REG_H_
 #define __CORE_REG_H_
 
-#define __MAKE_REG(CLASSNAME, ADDR, TYPE) class CLASSNAME { protected:\
-	CLASSNAME(){ }\
-	public:\
-	typedef TYPE Type;\
-	static inline TYPE value(){ return  ADDR;}\
-	static inline void value(TYPE aValue){ ADDR = aValue;} \
+	typedef volatile uint16_t& reg16_t;
+	typedef volatile uint8_t& reg8_t;
+
+namespace Internal
+{
+	template<typename Impl> 
+	struct Reg8
+	{
+		typedef uint8_t Type;
+		typedef uint8_t RegType;
+		
+		inline static RegType value() { return Impl::addr();}
+		inline static void value(Type aBits) { Impl::addr() = aBits;}
+	};
+	template<typename Impl>
+	struct Reg16
+	{
+		typedef uint16_t Type;
+		typedef reg16_t RegType;
+		
+		inline static RegType value() { return Impl::addr();}
+		inline static void value(Type aBits) { Impl::addr() = aBits;}
+		
+		struct Low :  Reg8<Low>
+		{
+			 static inline reg8_t value() { return (reg8_t)Impl::addr(); } 
+		};
+		struct High :  Reg8<High>
+		{
+			static inline reg8_t value() { return *(((volatile uint8_t *)(&Impl::addr())) + 1); }
+		};
+	};
 }
 
-#define MAKE_PORT(CLASSNAME, DDR, PORT, TYPE) class CLASSNAME { protected:\
+
+
+#define __MAKE_REG(CLASSNAME, ADDR, TYPE, SIZE) struct CLASSNAME:Internal::Reg##SIZE<CLASSNAME> { \
+	static inline TYPE addr(){ return  ADDR;}\
+}
+
+#define __MAKE_PORT(CLASSNAME, DDR, PORT, TYPE) class CLASSNAME { protected:\
 	CLASSNAME(){ }\
 	public:\
 	static inline TYPE value(){ return  PORT;}\
@@ -25,8 +57,9 @@
 	static inline TYPE direction(){ return  DDR;} \
 	static inline void direction(TYPE aValue){ DDR = aValue;} \
 }
-#define __MAKE_REG_8(ADDR) __MAKE_REG(_P##ADDR, ADDR, uint8_t)
-#define MAKE_PORT_8(DDR, PORT) MAKE_PORT(DDR##_##PORT, DDR, PORT, uint8_t)
+#define __MAKE_REG_8(ADDR) __MAKE_REG(_P##ADDR, ADDR, reg8_t,8)
+#define __MAKE_REG_16(ADDR) __MAKE_REG(_P##ADDR, ADDR, reg16_t,16)
+#define __MAKE_PORT_8(DDR, PORT) __MAKE_PORT(DDR##_##PORT, DDR, PORT, uint8_t)
 
 template<typename Reg>
 struct Regs
@@ -58,9 +91,9 @@ struct Regs
 		Reg::value(Reg::value() ^ aFlags);
 	}
 
-	static inline void isBitsSet(typename Reg::Type aFlags)
+	static inline bool isBitsSet(typename Reg::Type aFlags)
 	{
-		return Reg::value() & aFlags == aFlags;
+		return (Reg::value() & aFlags) == aFlags;
 	}
 	
 };
@@ -68,10 +101,17 @@ struct Regs
 template<typename Reg, uint16_t BitFlags>
 struct Bits
 {
-	static inline void set() { Regs<Reg>::setBits(BitFlags);}	
-	static inline void clear() { Regs<Reg>::clearBits(BitFlags);}
-	static inline bool isSet() { return Regs<Reg>::isBitsSet(BitFlags);}
+	static inline void setHigh() { Regs<Reg>::setBits(BitFlags);}	
+	static inline void setLow() { Regs<Reg>::clearBits(BitFlags);}
+	static inline bool isHigh() { return Regs<Reg>::isBitsSet(BitFlags);}
 };
+
+template<typename Reg, uint8_t BitNumber>
+struct Bit : Bits<Reg, 1<<BitNumber>
+{
+	
+};
+
 
 template<typename PortReg, typename DdrReg, typename PinReg> 
 struct Port

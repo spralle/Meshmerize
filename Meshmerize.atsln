@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Meshmerize", "Meshmerize\Meshmerize.cppproj", "{71042243-ABE8-4ECB-8FFE-A1012BF92426}"
 EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Network", "Network\Network.cppproj", "{EE72F623-9F3D-4AAF-8268-9A6E8C866866}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "NetworkTest", "NetworkTest\NetworkTest.cppproj", "{16D61D33-A120-41C9-984F-1FFA6C7F3DC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -13,6 +17,14 @@ Global
 		{71042243-ABE8-4ECB-8FFE-A1012BF92426}.Debug|AVR.Build.0 = Debug|AVR
 		{71042243-ABE8-4ECB-8FFE-A1012BF92426}.Release|AVR.ActiveCfg = Release|AVR
 		{71042243-ABE8-4ECB-8FFE-A1012BF92426}.Release|AVR.Build.0 = Release|AVR
+		{EE72F623-9F3D-4AAF-8268-9A6E8C866866}.Debug|AVR.ActiveCfg = Debug|AVR
+		{EE72F623-9F3D-4AAF-8268-9A6E8C866866}.Debug|AVR.Build.0 = Debug|AVR
+		{EE72F623-9F3D-4AAF-8268-9A6E8C866866}.Release|AVR.ActiveCfg = Release|AVR
+		{EE72F623-9F3D-4AAF-8268-9A6E8C866866}.Release|AVR.Build.0 = Release|AVR
+		{16D61D33-A120-41C9-984F-1FFA6C7F3DC3}.Debug|AVR.ActiveCfg = Debug|AVR
+		{16D61D33-A120-41C9-984F-1FFA6C7F3DC3}.Debug|AVR.Build.0 = Debug|AVR
+		{16D61D33-A120-41C9-984F-1FFA6C7F3DC3}.Release|AVR.ActiveCfg = Release|AVR
+		{16D61D33-A120-41C9-984F-1FFA6C7F3DC3}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
