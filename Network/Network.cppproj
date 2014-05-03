@@ -144,6 +144,9 @@
     <Compile Include="Core\Reg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Dev\Usart.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Dev\SPI.h">
       <SubType>compile</SubType>
     </Compile>
