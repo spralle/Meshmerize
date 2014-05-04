@@ -24,18 +24,21 @@ int main(void)
 	////
 	//typedef Pin<Avr::PortB, 5> Led;
 	//led.makeOutput();
-	Nrf24l<CE, CS> nrf(&spi);
-	nrf.init();
-	//status = nrf.readRegister(STATUS);
-	//
-	//
 	HardwareUsart usart(9600);
+	Nrf24l<CE, CS> nrf(&spi);
+	usart.write((uint8_t)'S');
+	nrf.init();
+	//Delays::ms(1000);
+	usart.write((uint8_t)'S');
+	status = nrf.readRegister(STATUS);
+	//
+	//
 	usart.init();
 	//
 	while(true)
 	{
 		usart.write((uint8_t)'H');
-		usart.write(status);
+		usart.write(65+status);
 		//led.setHigh();
 		//_delay_ms(1000);
 		Delays::ms(1000);

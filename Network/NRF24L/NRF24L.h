@@ -50,11 +50,14 @@ class Nrf24l : IModule
 	//IModule
 	bool init()
 	{
+		CE::makeOutput();
+		CSN::makeOutput();
 		CE::setLow();
 		CSN::setHigh();
+		Delays::ms(5);
 		//writeRegister(EN_AA, 0xAA);
 		//config
-		switchChannel(mChannel);
+		//switchChannel(mChannel);
 		return true;
 	}
 	bool exit()
@@ -100,12 +103,11 @@ class Nrf24l : IModule
 		Delays::us(10);
 		CSN::setLow();
 		Delays::us(10);
-		mSpi->write(aRegister);
+		mSpi->write(W_REGISTER | (REGISTER_MASK  & aRegister));
 		Delays::us(10);
 		while(aLength--)
 		{
-			mSpi->write(*aData);
-			aData++;
+			mSpi->write(*aData++);
 		}
 		CSN::setHigh();
 	}
@@ -115,7 +117,7 @@ class Nrf24l : IModule
 		Delays::us(10);
 		CSN::setLow();
 		Delays::us(10);
-		mSpi->write(R_REGISTER + aRegister);
+		mSpi->write(R_REGISTER  | (REGISTER_MASK & aRegister));
 		Delays::us(10);
 		val = mSpi->write(NOP);
 		Delays::us(10);
