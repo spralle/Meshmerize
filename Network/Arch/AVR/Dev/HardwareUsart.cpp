@@ -40,7 +40,7 @@ bool HardwareUsart::exit()
 void HardwareUsart::write(uint8_t aByte)
 {
 	 while(!(Avr::BUDRE0::isHigh()));
-	 UDR0 = aByte;
+	 Avr::RUDR0::value(aByte);
 }
 
 void HardwareUsart::write(uint8_t *aBuffer, uint16_t aLength)
@@ -49,7 +49,7 @@ void HardwareUsart::write(uint8_t *aBuffer, uint16_t aLength)
 	{
 		uint8_t val = *aBuffer;
 		while(!(Avr::BUDRE0::isHigh()));
-		UDR0 = val;
+		Avr::RUDR0::value(val);
 		aBuffer++;
 	}
 }

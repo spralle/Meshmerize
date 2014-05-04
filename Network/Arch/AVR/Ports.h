@@ -67,6 +67,10 @@ namespace Avr {
 	typedef __MAKE_REG_8(UCSR0C) RUCSR0C;
 #endif
 
+#ifdef UDR0
+	typedef __MAKE_REG_8(UDR0) RUDR0;
+#endif
+
 
 }
 #endif //__ARCH_AVR_PORTS_H__
