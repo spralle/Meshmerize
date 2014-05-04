@@ -70,6 +70,19 @@ namespace Avr {
 #ifdef UDR0
 	typedef __MAKE_REG_8(UDR0) RUDR0;
 #endif
+#ifdef SPCR
+	typedef __MAKE_REG_8(SPCR) RSPCR;
+	typedef Bits<RSPCR, MSTR> BMSTR;
+	typedef Bit<RSPCR, SPE> BSPE;
+	typedef Bit<RSPCR, SPR0> BSPR0;
+#endif
+#ifdef SPDR
+	typedef __MAKE_REG_8(SPDR) RSPDR;
+#endif
+#ifdef SPSR
+	typedef __MAKE_REG_8(SPSR) RSPSR;
+	typedef Bits<RSPSR, SPIF> BSPIF;
+#endif
 
 
 }

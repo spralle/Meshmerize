@@ -2,18 +2,27 @@
  * Delays.h
  *
  * Created: 2014-04-25 22:14:50
- *  Author: emil
+ *  Author: sprawl
  */ 
 
 
-#ifndef __UTIL_DELAYS_H_
-#define __UTIL_DELAYS_H_
-class Delays
+#ifndef __UTIL_DELAYS_H__
+#define __UTIL_DELAYS_H__
+
+#include <util/delay.h>
+
+struct Delays
 {
-	public:
-	inline static void ms(uint32_t aMilliseconds);
-	inline static void us(uint32_t aMicroseconds);
+	inline static void ms(double aMilliseconds)
+	{
+		_delay_ms(aMilliseconds);
+		
+	}
+	inline static void us(double aMicroseconds)
+	{
+		_delay_us(aMicroseconds);
+	}
 };
 
 
-#endif //__UTIL_DELAYS_H_
+#endif //__UTIL_DELAYS_H__

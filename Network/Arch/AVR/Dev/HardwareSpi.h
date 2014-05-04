@@ -16,25 +16,47 @@
 
 
 template <typename MOSI, typename MISO, typename SCK>
-class HardwareSpi : Spi
+class HardwareSpi : public Spi
 {
 public:	
-	virtual void init();
-	virtual void exit();
-	virtual uint8_t write(uint8_t aValue);
-	virtual	uint8_t read();
+	virtual bool init()
+	{
+		//SCK::makeOutput();
+		//MOSI::makeOutput();
+		//Avr::BMSTR::setHigh();
+		//Avr::BSPE::setHigh();
+		//Avr::BSPR0::setHigh();
+// Set MOSI, SCK as Output
+DDRB = (1<<5)|(1<<3);
+
+// Enable SPI, Set as Master
+//Prescaler: Fosc/16, Enable Interrupts
+SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);		
+		return true;
+	}
+	virtual bool exit()
+	{
+		Avr::BSPE::setLow();
+		return true;
+	}
+	virtual uint8_t write(uint8_t aValue)
+	{
+		//Avr::RSPDR::value(aValue);
+		//while(!Avr::BSPIF::isHigh());
+		//return Avr::RSPDR::value();
+		  //// Load data into the buffer
+		  SPDR = aValue;
+		  
+		  //Wait until transmission complete
+		  while(!((SPSR)&(1<<SPIF)));
+		  
+		  // Return received data
+		  return(SPDR);
+	}
+	virtual	uint8_t read()
+	{
+		return Avr::RSPDR::value();
+	}
 };
-
-
-#include "../../../Core/Reg.h"
-
-typedef __MAKE_REG_8(SPCR) Spcr;
-typedef __MAKE_REG_8(SPDR) Spdr;
-typedef __MAKE_REG_8(SPSR) Spsr;
-typedef Bits<Spsr, SPIF> SpsrSpif;
-typedef Bits<Spcr, MSTR> SpcrMstr;
-typedef Bits<Spcr, SPE> SpcrSpe;
-
-
 
 #endif //__ARCH_AVR_DEV_HARDWARESPI_H_
