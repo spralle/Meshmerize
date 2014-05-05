@@ -36,19 +36,19 @@ enum Nrf24lCrcMode
 };
 
 template<typename CE, typename CSN>
-class Nrf24l : IModule
+class  __attribute__((packed)) Nrf24l : public IModule
 {
 	public:
-	Nrf24l(Spi *aSpi)
-	:mSpi(aSpi)
+	Nrf24l(Spi *aSpi, uint8_t aChannel=0x77)
+	  :mSpi(aSpi)
 	{
-		mChannel = 0x77;
+		mChannel = aChannel;
 	}
 	
 	~Nrf24l() {};
 	
 	//IModule
-	bool init()
+	virtual bool init()
 	{
 		CE::makeOutput();
 		CSN::makeOutput();
@@ -57,10 +57,10 @@ class Nrf24l : IModule
 		Delays::ms(5);
 		//writeRegister(EN_AA, 0xAA);
 		//config
-		//switchChannel(mChannel);
+		switchChannel(mChannel);
 		return true;
 	}
-	bool exit()
+	virtual bool exit()
 	{
 		return true;
 	}
@@ -71,13 +71,30 @@ class Nrf24l : IModule
 	void switchChannel(uint8_t aChannel)
 	{
 		mChannel = aChannel;
-		writeRegister(RF_CH, 2400+mChannel);
+		writeRegister(RF_CH, 2400+aChannel);
 	}
 	void setRadioPower(Nrf24lPaDbm aPower)
 	{
 		
 	}
-	void setCrcMode(Nrf24lCrcMode aCrcMode);
+	void setCrcMode(Nrf24lCrcMode aCrcMode)
+	{
+		uint8_t config = readRegister(CONFIG) & ~( _BV(CRCO) | _BV(EN_CRC)) ;
+  
+		if ( aCrcMode == NRF24L_CRC_DISABLED )
+		{
+		}
+		else if ( aCrcMode == NRF24L_CRC_8)
+		{
+			config |= _BV(EN_CRC);
+		}
+		else //NRF24L_CRC_16
+		{
+			config |= _BV(EN_CRC);
+			config |= _BV( CRCO );
+		}
+		writeRegister( CONFIG, config ) ;
+	}
 
 	void openPipe(uint8_t aPipeNumber, uint8_t *aPipeAddress, uint8_t aAddressLength);
 	void closePipe(uint8_t aPipeNumber);
@@ -85,13 +102,50 @@ class Nrf24l : IModule
 
 	void powerUp();
 	void powerDown();
+	
+	void powerUpTx()
+	{
+		writeRegister(CONFIG, readRegister(CONFIG) | (_BV(PWR_UP) & ~_BV(PRIM_RX)));
+		Delays::us(150);
+	}
+	
+
+	uint32_t send(uint8_t *aBuffer, uint32_t aLength)
+	{
+		CE::setLow();
+		powerUpTx();
+		
+		flushTx();
+	
+		
+		CSN::setLow();
+		
+		CE::setHigh();
+	}
 
 
 	//private:
 	Spi *mSpi;
-	//Pin *mChipEnable;
-	//Pin *mChipSelect;
+	
+	uint8_t flushTx()
+	{
+		uint8_t status;
+		CSN::setLow();
+		status = mSpi->write(FLUSH_TX);
+		CSN::setHigh();
+		return status;
+	}
 
+	uint8_t flushRx()
+	{
+		uint8_t status;
+		CSN::setLow();
+		status = mSpi->write(FLUSH_RX);
+		CSN::setHigh();
+		return status;
+	}
+
+	
 	uint8_t mChannel;
 
 	void writeRegister(uint8_t aRegister, uint8_t aData)
@@ -118,7 +172,7 @@ class Nrf24l : IModule
 		CSN::setLow();
 		Delays::us(10);
 		mSpi->write(R_REGISTER  | (REGISTER_MASK & aRegister));
-		Delays::us(10);
+		Delays::us(100);
 		val = mSpi->write(NOP);
 		Delays::us(10);
 		CSN::setHigh();

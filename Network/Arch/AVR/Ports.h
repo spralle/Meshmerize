@@ -72,7 +72,7 @@ namespace Avr {
 #endif
 #ifdef SPCR
 	typedef __MAKE_REG_8(SPCR) RSPCR;
-	typedef Bits<RSPCR, MSTR> BMSTR;
+	typedef Bit<RSPCR, MSTR> BMSTR;
 	typedef Bit<RSPCR, SPE> BSPE;
 	typedef Bit<RSPCR, SPR0> BSPR0;
 #endif
@@ -81,7 +81,8 @@ namespace Avr {
 #endif
 #ifdef SPSR
 	typedef __MAKE_REG_8(SPSR) RSPSR;
-	typedef Bits<RSPSR, SPIF> BSPIF;
+	typedef Bit<RSPSR, SPIF> BSPIF;
+	typedef Bit<RSPSR, DORD> BDORD;
 #endif
 
 

@@ -14,37 +14,42 @@
 int main(void)
 {
 	typedef Pin<Avr::PortB, 1> CE;
-	typedef Pin<Avr::PortB, 2> CS;
+	typedef Pin<Avr::PortB, 2> CSN;
 	typedef Pin<Avr::PortB, 3> PMOSI;
 	typedef Pin<Avr::PortB, 4> PMISO;
 	typedef Pin<Avr::PortB, 5> PSCK;
 	HardwareSpi<PMOSI, PMISO, PSCK> spi;
 	uint8_t status = 0;
+	CSN::makeOutput();
+	CSN::setHigh();
 	spi.init();
 	////
 	//typedef Pin<Avr::PortB, 5> Led;
 	//led.makeOutput();
 	HardwareUsart usart(9600);
-	Nrf24l<CE, CS> nrf(&spi);
+	usart.init();
+	Nrf24l<CE, CSN> nrf(&spi);
 	usart.write((uint8_t)'S');
 	nrf.init();
-	//Delays::ms(1000);
+	nrf.setRadioPower(NRF24L_PA_MAX);
+	nrf.setCrcMode(NRF24L_CRC_16);
+	Delays::ms(1000);
 	usart.write((uint8_t)'S');
-	status = nrf.readRegister(STATUS);
 	//
 	//
-	usart.init();
-	//
+	uint8_t buf[] = {0xDE, 0xAD, 0xBE, 0xEF};
 	while(true)
 	{
+		
+		nrf.send(buf, 4);
+		//status = nrf.readRegister(STATUS);
 		usart.write((uint8_t)'H');
 		usart.write(65+status);
 		//led.setHigh();
 		//_delay_ms(1000);
 		Delays::ms(1000);
-		//usart.write((uint8_t)'L');
+		usart.write((uint8_t)'L');
 		//led.setLow();
-		_delay_ms(1000);
-		//Delays::ms(1000);
+		Delays::ms(1000);
 	}
 }

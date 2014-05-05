@@ -128,13 +128,13 @@
     <Compile Include="Arch\AVR\AVR.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Arch\AVR\Dev\HardwareSpi.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Arch\AVR\Dev\HardwareUsart.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Arch\AVR\Dev\HardwareSpi.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Arch\AVR\Dev\HardwareSpi.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Arch\AVR\Dev\HardwareUsart.h">
@@ -159,6 +159,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="IModule.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="IO\IInputStream.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="IO\IOutputStream.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="LinkInterface.h">
@@ -196,6 +202,7 @@
     <Folder Include="Arch\AVR\Util" />
     <Folder Include="Core\" />
     <Folder Include="Dev" />
+    <Folder Include="IO" />
     <Folder Include="Util" />
     <Folder Include="NRF24L\" />
   </ItemGroup>

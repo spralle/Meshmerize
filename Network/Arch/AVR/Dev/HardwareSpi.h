@@ -17,6 +17,12 @@ enum SpiDataMode
 	SpiDataMode3 = 0x0c
 };
 
+enum SpiBitOrder
+{
+	SpiBitOrderMsb,
+	SpiBitOrderLsb	
+};
+
 
 #define SPI_MODE_MASK 0x0c
 #define SPI_CLOCK_MASK 0x03  
@@ -35,19 +41,14 @@ class HardwareSpi : public Spi
 public:	
 	virtual bool init()
 	{
-		//SCK::makeOutput();
-		//MOSI::makeOutput();
-		//Avr::BMSTR::setHigh();
-		//Avr::BSPE::setHigh();
-		////Avr::BSPR0::setHigh();
-// Set MOSI, SCK as Output
-DDRB = (1<<5)|(1<<3);
+		Avr::BMSTR::setHigh();
+		Avr::BSPE::setHigh();
+		SCK::makeOutput();
+		MOSI::makeOutput();
 
-// Enable SPI, Set as Master
-//Prescaler: Fosc/16, Enable Interrupts
-SPCR = (1<<SPE)|(1<<MSTR);	
-		setDataMode(SpiDataMode0);
-		setClockDivider(SPI_2XCLOCK_MASK);
+		//setBitOrder(SpiBitOrderMsb);
+		//setDataMode(SpiDataMode0);
+		//setClockDivider(SPI_2XCLOCK_MASK);
 		return true;
 	}
 	virtual bool exit()
@@ -55,19 +56,24 @@ SPCR = (1<<SPE)|(1<<MSTR);
 		Avr::BSPE::setLow();
 		return true;
 	}
+	
+	virtual void setBitOrder(SpiBitOrder aBitOrder)
+	{
+		if(aBitOrder == SpiBitOrderLsb)
+		{
+			Avr::BDORD::setHigh();
+		}
+		else
+		{
+			Avr::BDORD::setLow();
+		}
+	}
+	
 	virtual uint8_t write(uint8_t aValue)
 	{
-		//Avr::RSPDR::value(aValue);
-		//while(!Avr::BSPIF::isHigh());
-		//return Avr::RSPDR::value();
-		  //// Load data into the buffer
-		  SPDR = aValue;
-		  
-		  //Wait until transmission complete
-		  while(!((SPSR)&(1<<SPIF)));
-		  
-		  // Return received data
-		  return(SPDR);
+		Avr::RSPDR::value(aValue);
+		while(!Avr::BSPIF::isHigh());
+		return Avr::RSPDR::value();
 	}
 	
 	void setDataMode(SpiDataMode aMode)
