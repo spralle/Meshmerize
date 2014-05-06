@@ -28,6 +28,7 @@
 #define RX_PW_P5    0x16
 #define FIFO_STATUS 0x17
 #define DYNPD       0x1C
+#define FEATURE     0x1D
 
 /* Bit Mnemonics */
 
@@ -94,12 +95,20 @@
 #define DPL_P4      4
 #define DPL_P5      5
 
+/* features */
+#define EN_DPL	    2
+#define EN_ACK_PAY  1
+#define EN_DYN_ACK  0
+
 /* Instruction Mnemonics */
 #define R_REGISTER    0x00 /* last 4 bits will indicate reg. address */
 #define W_REGISTER    0x20 /* last 4 bits will indicate reg. address */
 #define REGISTER_MASK 0x1F
+#define ACTIVATE      0x50
+#define R_RX_PL_WID   0x60
 #define R_RX_PAYLOAD  0x61
 #define W_TX_PAYLOAD  0xA0
+#define W_TX_PAYLOAD_NO_ACK  0xB0
 #define FLUSH_TX      0xE1
 #define FLUSH_RX      0xE2
 #define REUSE_TX_PL   0xE3

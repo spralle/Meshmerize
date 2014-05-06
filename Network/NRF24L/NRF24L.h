@@ -34,7 +34,9 @@ enum Nrf24lCrcMode
 	NRF24L_CRC_8,
 	NRF24L_CRC_16
 };
-
+/**
+ * Based on RF24, mirf among others
+ */
 template<typename CE, typename CSN>
 class  __attribute__((packed)) Nrf24l : public IModule
 {
@@ -58,6 +60,7 @@ class  __attribute__((packed)) Nrf24l : public IModule
 		//writeRegister(EN_AA, 0xAA);
 		//config
 		switchChannel(mChannel);
+		enableDynamicPayloads();
 		return true;
 	}
 	virtual bool exit()
@@ -105,28 +108,72 @@ class  __attribute__((packed)) Nrf24l : public IModule
 	
 	void powerUpTx()
 	{
-		writeRegister(CONFIG, readRegister(CONFIG) | (_BV(PWR_UP) & ~_BV(PRIM_RX)));
+		writeRegister(CONFIG, (readRegister(CONFIG) | _BV(PWR_UP)) & ~_BV(PRIM_RX));
+		Delays::us(150);
+	}
+	void powerUpRx()
+	{
+		writeRegister(CONFIG, readRegister(CONFIG) | _BV(PWR_UP) | _BV(PRIM_RX));
 		Delays::us(150);
 	}
 	
+	void listen()
+	{
+		powerUpRx();
+		flushRx();
+		flushTx();
+		CE::setHigh();
+		
+		//wait for radio to start
+		Delays::us(130);
+	}
+
 
 	uint32_t send(uint8_t *aBuffer, uint32_t aLength)
 	{
 		CE::setLow();
 		powerUpTx();
-		
 		flushTx();
-	
+		
 		
 		CSN::setLow();
-		
+		mSpi->write(W_TX_PAYLOAD);
+		while(aLength--)
+		{
+			mSpi->write(*aBuffer);
+			aBuffer++;
+		}
 		CE::setHigh();
+		Delays::us(10);
+		CE::setLow();
+		return aLength;
 	}
 
 
 	//private:
 	Spi *mSpi;
+	uint8_t mChannel;
+
+	void enableDynamicPayloads()
+	{
+		writeRegister(FEATURE,readRegister(FEATURE) | _BV(EN_DPL) );
+		if ( ! readRegister(FEATURE) )
+		{
+			toggleFeatures();				
+			writeRegister(FEATURE,readRegister(FEATURE) | _BV(EN_DPL) );
+		}
+		writeRegister(DYNPD,readRegister(DYNPD) | _BV(DPL_P5) | _BV(DPL_P4) | _BV(DPL_P3) | _BV(DPL_P2) | _BV(DPL_P1) | _BV(DPL_P0));
+	}
 	
+
+	void toggleFeatures(void)
+	{
+		CSN::setLow();
+		mSpi->write( ACTIVATE );
+		mSpi->write( 0x73 );
+		CSN::setHigh();
+	}
+
 	uint8_t flushTx()
 	{
 		uint8_t status;
@@ -145,20 +192,23 @@ class  __attribute__((packed)) Nrf24l : public IModule
 		return status;
 	}
 
-	
-	uint8_t mChannel;
-
 	void writeRegister(uint8_t aRegister, uint8_t aData)
 	{
-		writeRegister(aRegister, &aData,1);
+		//Delays::us(10);
+		CSN::setLow();
+		//Delays::us(10);
+		mSpi->write(W_REGISTER | (REGISTER_MASK  & aRegister));
+		//Delays::us(10);
+		mSpi->write(aData);
+		CSN::setHigh();
 	}
 	void writeRegister(uint8_t aRegister, uint8_t *aData, uint8_t aLength)
 	{
-		Delays::us(10);
+		//Delays::us(10);
 		CSN::setLow();
-		Delays::us(10);
+		//Delays::us(10);
 		mSpi->write(W_REGISTER | (REGISTER_MASK  & aRegister));
-		Delays::us(10);
+		//Delays::us(10);
 		while(aLength--)
 		{
 			mSpi->write(*aData++);
@@ -168,13 +218,13 @@ class  __attribute__((packed)) Nrf24l : public IModule
 	uint8_t readRegister(uint8_t aRegister)
 	{
 		uint8_t val;
-		Delays::us(10);
+		//Delays::us(10);
 		CSN::setLow();
-		Delays::us(10);
+		//Delays::us(10);
 		mSpi->write(R_REGISTER  | (REGISTER_MASK & aRegister));
-		Delays::us(100);
+		//Delays::us(100);
 		val = mSpi->write(NOP);
-		Delays::us(10);
+		//Delays::us(10);
 		CSN::setHigh();
 		return val;
 	}
